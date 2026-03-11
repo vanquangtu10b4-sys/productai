@@ -9,6 +9,7 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "express": "^4.19.2",
+    "groq-sdk": "^1.1.1",
     "openai": "^4.56.0"
   }
 }
