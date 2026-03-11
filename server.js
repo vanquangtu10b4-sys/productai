@@ -1,48 +1,62 @@
-const express = require("express")
-const app = express()
+import express from "express";
+import cors from "cors";
+import OpenAI from "openai";
 
-app.use(express.json())
-app.use(express.static(__dirname))
+const app = express();
 
-app.post("/generate", (req, res) => {
+app.use(cors());
+app.use(express.json());
+app.use(express.static("public"));
 
-    const product = req.body.product
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+});
 
-    const description = `Premium ${product} designed for comfort and modern style.`
+app.post("/generate", async (req, res) => {
+    try {
 
-    res.json({
-        product: product,
-        description: description
-    })
+        const { product } = req.body;
 
-})
-app.post("/generate-seo", (req, res) => {
+        if (!product) {
+            return res.status(400).json({
+                error: "Product name is required"
+            });
+        }
 
-    const product = req.body.product
+        const completion = await openai.chat.completions.create({
+            model: "gpt-4.1-mini",
+            messages: [
+                {
+                    role: "system",
+                    content: "You are an expert ecommerce copywriter."
+                },
+                {
+                    role: "user",
+                    content: `Write a professional ecommerce product description for: ${product}. Include benefits and make it persuasive.`
+                }
+            ],
+            max_tokens: 200
+        });
 
-    const description = `Buy the best ${product} online. Premium quality ${product} designed for modern lifestyle and optimized for ecommerce SEO.`
+        const description = completion.choices[0].message.content;
 
-    res.json({
-        product,
-        description
-    })
+        res.json({
+            description
+        });
 
-})
-app.post("/generate-amazon", (req, res) => {
+    } catch (error) {
 
-    const product = req.body.product
+        console.error(error);
 
-    const description = `High-quality ${product} perfect for Amazon sellers. Designed for durability, comfort and premium performance.`
+        res.status(500).json({
+            error: "AI generation failed"
+        });
 
-    res.json({
-        product,
-        description
-    })
+    }
+});
 
-})
-
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log("Server running on port " + PORT)
-})
+    console.log("Server running on port", PORT);
+});
