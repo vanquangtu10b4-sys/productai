@@ -1,79 +1,50 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>AI Product Description Generator</title>
 
     <style>
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f3f4f8;
-            margin: 0;
-            padding: 0;
+            font-family: Arial;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         .container {
-            max-width: 700px;
-            margin: auto;
-            margin-top: 80px;
             background: white;
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            width: 500px;
             text-align: center;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-        }
-
-        p {
-            color: #666;
-            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
         input {
-            width: 80%;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            margin-bottom: 20px;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
         }
 
         button {
-            background: #4f46e5;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #5b5bd6;
             color: white;
             border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            border-radius: 6px;
+            border-radius: 5px;
             cursor: pointer;
         }
 
-            button:hover {
-                background: #4338ca;
-            }
-
-        #result {
+        .result {
             margin-top: 30px;
-            text-align: left;
-            background: #fafafa;
+            background: #f1f1f1;
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 5px;
             min-height: 60px;
-            white-space: pre-line;
-        }
-
-        .loader {
-            display: none;
-            margin-top: 15px;
-            color: #555;
         }
     </style>
 
@@ -83,67 +54,33 @@
 
     <div class="container">
 
-        <h1>AI Product Description Generator</h1>
+        <h2>AI Product Description Generator</h2>
 
-        <p>Generate product descriptions instantly using AI.</p>
+        <input id="product" placeholder="Enter product name">
 
-        <input id="productInput"
-               placeholder="Enter product name (example: Wireless Earbuds)">
+        <button onclick="generate()">Generate Description</button>
 
-        <br>
-
-        <button onclick="generateDescription()">
-            Generate Description
-        </button>
-
-        <div class="loader" id="loading">
-            Generating with AI...
-        </div>
-
-        <div id="result"></div>
+        <div class="result" id="result"></div>
 
     </div>
 
-
     <script>
 
-        async function generateDescription() {
+        async function generate() {
 
-            const product = document.getElementById("productInput").value
+            const product = document.getElementById("product").value;
 
-            if (!product) {
-                alert("Please enter a product name")
-                return
-            }
+            const res = await fetch("/generate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ product })
+            });
 
-            document.getElementById("loading").style.display = "block"
-            document.getElementById("result").innerHTML = ""
+            const data = await res.json();
 
-            try {
-
-                const response = await fetch("/generate", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        product: product
-                    })
-                })
-
-                const data = await response.json()
-
-                document.getElementById("loading").style.display = "none"
-
-                document.getElementById("result").innerText = data.text
-
-            } catch (err) {
-
-                document.getElementById("loading").style.display = "none"
-
-                document.getElementById("result").innerText = "Error generating description."
-
-            }
+            document.getElementById("result").innerText = data.text;
 
         }
 

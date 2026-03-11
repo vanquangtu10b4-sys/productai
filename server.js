@@ -1,32 +1,27 @@
 import express from "express";
-import OpenAI from "openai";
-import path from "path";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const app = express();
 
 app.use(express.json());
 app.use(express.static("public"));
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 app.post("/generate", async (req, res) => {
     try {
 
         const { product } = req.body;
 
-        const completion = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
-            messages: [
-                {
-                    role: "user",
-                    content: `Write a short product description for: ${product}`
-                }
-            ]
+        const model = genAI.getGenerativeModel({
+            model: "gemini-1.5-flash"
         });
 
-        const text = completion.choices[0].message.content;
+        const prompt = `Write a short product description for: ${product}`;
+
+        const result = await model.generateContent(prompt);
+
+        const text = result.response.text();
 
         res.json({ text });
 
