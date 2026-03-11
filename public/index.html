@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
@@ -11,7 +12,7 @@
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fb;
+            background: #f3f4f8;
             margin: 0;
             padding: 0;
         }
@@ -66,17 +67,17 @@
             padding: 20px;
             border-radius: 8px;
             min-height: 60px;
+            white-space: pre-line;
         }
 
         .loader {
             display: none;
-            margin-top: 20px;
-            color: #666;
+            margin-top: 15px;
+            color: #555;
         }
     </style>
 
 </head>
-
 
 <body>
 
@@ -102,7 +103,6 @@
         <div id="result"></div>
 
     </div>
-
 
 
     <script>
@@ -135,20 +135,19 @@
 
                 document.getElementById("loading").style.display = "none"
 
-                document.getElementById("result").innerHTML = data.text
+                document.getElementById("result").innerText = data.text
 
             } catch (err) {
 
                 document.getElementById("loading").style.display = "none"
 
-                document.getElementById("result").innerHTML = "Error generating description."
+                document.getElementById("result").innerText = "Error generating description."
 
             }
 
         }
 
     </script>
-
 
 </body>
 </html>
