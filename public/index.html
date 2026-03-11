@@ -13,41 +13,63 @@
             font-family: Arial;
             margin: 0;
             background: #f4f6fb;
+            color: #333;
         }
 
         header {
             background: linear-gradient(90deg,#4a6cf7,#6f8cff);
             color: white;
-            padding: 40px 20px;
+            padding: 60px 20px;
             text-align: center;
         }
 
             header h1 {
                 margin: 0;
-                font-size: 34px;
+                font-size: 36px;
             }
 
             header p {
                 margin-top: 10px;
                 opacity: 0.9;
+                font-size: 18px;
             }
+
+        .badges {
+            margin-top: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: white;
+            color: #4a6cf7;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin: 4px;
+            font-weight: bold;
+        }
 
         .tools {
             display: grid;
             grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
             gap: 20px;
-            padding: 30px;
-            max-width: 900px;
+            padding: 40px 20px;
+            max-width: 1000px;
             margin: auto;
         }
 
         .tool {
             background: white;
-            padding: 20px;
+            padding: 25px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             text-align: center;
+            transition: 0.2s;
         }
+
+            .tool:hover {
+                transform: translateY(-5px);
+            }
 
             .tool h3 {
                 margin-top: 0;
@@ -59,6 +81,11 @@
             padding: 20px;
         }
 
+            .generator h2 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
         .chat {
             background: white;
             padding: 20px;
@@ -66,6 +93,8 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             min-height: 200px;
             margin-bottom: 20px;
+            max-height: 400px;
+            overflow: auto;
         }
 
         .message {
@@ -75,20 +104,21 @@
         .user {
             font-weight: bold;
             color: #4a6cf7;
+            margin-bottom: 6px;
         }
 
         .ai {
-            margin-top: 5px;
             background: #f7f7f7;
             padding: 15px;
             border-radius: 8px;
+            line-height: 1.5;
         }
 
         .copy {
             font-size: 12px;
             color: #4a6cf7;
             cursor: pointer;
-            margin-top: 5px;
+            margin-top: 6px;
         }
 
         .input-area {
@@ -105,24 +135,70 @@
         }
 
         button {
-            padding: 12px 20px;
+            padding: 12px 22px;
             background: #4a6cf7;
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
+            font-weight: bold;
         }
 
             button:hover {
                 background: #3657e0;
             }
 
-        footer {
+        .loading {
             text-align: center;
-            padding: 30px;
-            font-size: 13px;
+            padding: 10px;
             color: #777;
+            font-size: 14px;
         }
+
+        .spinner {
+            border: 3px solid #eee;
+            border-top: 3px solid #4a6cf7;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        footer {
+            margin-top: 60px;
+            background: #fff;
+            border-top: 1px solid #eee;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+            footer .stack {
+                margin-top: 10px;
+            }
+
+                footer .stack span {
+                    background: #f1f3ff;
+                    color: #4a6cf7;
+                    padding: 5px 10px;
+                    border-radius: 6px;
+                    margin: 4px;
+                    display: inline-block;
+                    font-size: 12px;
+                }
     </style>
 
 </head>
@@ -133,9 +209,16 @@
 
         <h1>AI Commerce Toolkit</h1>
 
-        <p>
-            Generate product descriptions, marketing copy and social media captions using AI
-        </p>
+        <p>Generate product descriptions, SEO titles and social captions using AI</p>
+
+        <div class="badges">
+
+            <span class="badge">Node.js</span>
+            <span class="badge">Express</span>
+            <span class="badge">Groq API</span>
+            <span class="badge">Azure App Service</span>
+
+        </div>
 
     </header>
 
@@ -144,12 +227,12 @@
 
         <div class="tool">
             <h3>Product Description</h3>
-            <p>Create detailed product listings for e-commerce</p>
+            <p>Create detailed product listings for e-commerce stores</p>
         </div>
 
         <div class="tool">
             <h3>SEO Title</h3>
-            <p>Generate optimized titles for search engines</p>
+            <p>Generate optimized titles for better search rankings</p>
         </div>
 
         <div class="tool">
@@ -167,6 +250,8 @@
 
     <section class="generator">
 
+        <h2>AI Product Description Generator</h2>
+
         <div class="chat" id="chat"></div>
 
         <div class="input-area">
@@ -179,9 +264,33 @@
 
     </section>
 
+
     <footer>
 
-        Powered by AI • Built with Azure
+        <div>
+
+            <strong>AI Commerce Toolkit</strong>
+
+        </div>
+
+        <div>
+
+            AI powered eCommerce content generator built with modern cloud technologies.
+
+        </div>
+
+        <div class="stack">
+
+            <span>Node.js</span>
+            <span>Express</span>
+            <span>Groq API</span>
+            <span>Azure App Service</span>
+
+        </div>
+
+        <div style="margin-top:10px;font-size:12px;">
+            © 2026 AI Commerce Toolkit
+        </div>
 
     </footer>
 
@@ -203,6 +312,14 @@
 
             chat.appendChild(msg);
 
+            const loading = document.createElement("div");
+            loading.className = "loading";
+            loading.innerHTML = `<span class="spinner"></span>Generating AI description...`;
+
+            msg.appendChild(loading);
+
+            chat.scrollTop = chat.scrollHeight;
+
             const res = await fetch("/generate", {
                 method: "POST",
                 headers: {
@@ -212,6 +329,8 @@
             });
 
             const data = await res.json();
+
+            loading.remove();
 
             const ai = document.createElement("div");
             ai.className = "ai";
